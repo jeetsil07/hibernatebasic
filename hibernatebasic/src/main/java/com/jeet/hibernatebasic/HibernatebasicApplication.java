@@ -8,6 +8,7 @@ public class HibernatebasicApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HibernatebasicApplication.class, args);
+		System.out.println("jeet");
 	}
 
 }
