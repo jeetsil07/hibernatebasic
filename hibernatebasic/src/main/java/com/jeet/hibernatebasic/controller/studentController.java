@@ -46,8 +46,4 @@ public class studentController {
         StudentDto student = studentService.updateStudent(id,studentDto);
         return new ApiResponse<>("Student update successfully", student, true, HttpStatus.OK.value());
     }
-    @PutMapping("/student/{id}")
-    public StudentDto updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
-        return studentService.updateStudent(id,studentDto); // Placeholder return statement
-    }
 }
