@@ -38,4 +38,28 @@ public class StudentServiceImpl implements StudentService {
                 .map(s -> new StudentDto(s.getName(), s.getEmail(), s.getRoll()))
                 .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
     }
+
+    @Override
+    public StudentDto updateStudent(Long id, StudentDto studentDto) {
+//        return studentRepository.findById(id)
+//                .map(existingStudent -> {
+//                    existingStudent.setName(studentDto.getName());
+//                    existingStudent.setEmail(studentDto.getEmail());
+//                    existingStudent.setRoll(studentDto.getRoll());
+//                    Student updatedStudent = studentRepository.save(existingStudent);
+//                    return new StudentDto(updatedStudent.getName(), updatedStudent.getEmail(), updatedStudent.getRoll());
+//                })
+//                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+            Student student = studentRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+
+            // update fields
+            student.setName(studentDto.getName());
+            student.setEmail(studentDto.getEmail());
+            student.setRoll(studentDto.getRoll());
+
+            Student updated = studentRepository.save(student);
+            return new StudentDto(updated.getName(), updated.getEmail(),
+                        updated.getRoll());
+    }
 }

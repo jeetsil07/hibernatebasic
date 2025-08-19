@@ -30,4 +30,8 @@ public class studentController {
     public StudentDto getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id);
     }
+    @PutMapping("/student/{id}")
+    public StudentDto updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
+        return studentService.updateStudent(id,studentDto); // Placeholder return statement
+    }
 }
