@@ -2,7 +2,10 @@ package com.jeet.hibernatebasic.controller;
 
 import com.jeet.hibernatebasic.dto.StudentDto;
 import com.jeet.hibernatebasic.entity.Student;
+import com.jeet.hibernatebasic.response.ApiResponse;
 import com.jeet.hibernatebasic.service.StudentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,17 +20,30 @@ public class studentController {
     }
 
     @PostMapping("/student")
-    public Student addStudent(@RequestBody StudentDto studentDto){
-        return studentService.createStudent(studentDto);
+    public ApiResponse<StudentDto> addStudent(@RequestBody StudentDto studentDto){
+        StudentDto saved = studentService.createStudent(studentDto);
+        return new ApiResponse<>(
+                "Student created successfully",
+                saved,
+                true,
+                HttpStatus.OK.value()
+        );
     }
 
     @GetMapping("/students")
-    public List<StudentDto> getStudents() {
-        return studentService.getAllStudents();
+    public ApiResponse<List<StudentDto>> getStudents() {
+        List<StudentDto> students = studentService.getAllStudents();
+        return new ApiResponse<>("Students retrieved successfully", students, true,HttpStatus.OK.value());
     }
 
     @GetMapping("/student/{id}")
-    public StudentDto getStudentById(@PathVariable Long id) {
-        return studentService.getStudentById(id);
+    public ApiResponse<StudentDto> getStudentById(@PathVariable Long id) {
+        StudentDto student = studentService.getStudentById(id);
+        return new ApiResponse<>("Student retrieved successfully", student, true, HttpStatus.OK.value());
+    }
+    @PutMapping("/student/{id}")
+    public ApiResponse<StudentDto> updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
+        StudentDto student = studentService.updateStudent(id,studentDto);
+        return new ApiResponse<>("Student update successfully", student, true, HttpStatus.OK.value());
     }
 }

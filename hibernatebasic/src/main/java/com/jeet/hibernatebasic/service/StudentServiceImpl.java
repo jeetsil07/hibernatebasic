@@ -2,6 +2,7 @@ package com.jeet.hibernatebasic.service;
 
 import com.jeet.hibernatebasic.dto.StudentDto;
 import com.jeet.hibernatebasic.entity.Student;
+import com.jeet.hibernatebasic.exception.StudentNotFoundException;
 import com.jeet.hibernatebasic.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,26 +17,48 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student createStudent(StudentDto studentDto){
+    public StudentDto createStudent(StudentDto studentDto) {
         Student st = new Student();
         st.setName(studentDto.getName());
         st.setEmail(studentDto.getEmail());
         st.setRoll(studentDto.getRoll());
-        return studentRepository.save(st);
+        Student s = studentRepository.save(st);
+        return new StudentDto(s.getName(), s.getEmail(), s.getRoll());
     }
 
     @Override
     public List<StudentDto> getAllStudents() {
-        return studentRepository.findAll()
-                .stream()
-                .map(s -> new StudentDto(s.getName(), s.getEmail(), s.getRoll()))
+        List<Student> students = studentRepository.findAll();
+
+        // Map Student -> StudentDto
+        return students.stream()
+                .map(student -> new StudentDto(
+                        student.getName(),
+                        student.getEmail(),
+                        student.getRoll()
+                ))
                 .collect(Collectors.toList());
     }
 
     @Override
     public StudentDto getStudentById(Long id) {
-        return studentRepository.findById(id)
-                .map(s -> new StudentDto(s.getName(), s.getEmail(), s.getRoll()))
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+        return new StudentDto(student.getName(), student.getEmail(), student.getRoll());
+    }
+
+    @Override
+    public StudentDto updateStudent(Long id, StudentDto studentDto) {
+            Student student = studentRepository.findById(id)
+                    .orElseThrow(() -> new StudentNotFoundException(id));
+
+            // update fields
+            student.setName(studentDto.getName());
+            student.setEmail(studentDto.getEmail());
+            student.setRoll(studentDto.getRoll());
+
+            Student updated = studentRepository.save(student);
+            return new StudentDto(updated.getName(), updated.getEmail(),
+                        updated.getRoll());
     }
 }
