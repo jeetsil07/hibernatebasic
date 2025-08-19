@@ -31,4 +31,11 @@ public class StudentServiceImpl implements StudentService {
                 .map(s -> new StudentDto(s.getName(), s.getEmail(), s.getRoll()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public StudentDto getStudentById(Long id) {
+        return studentRepository.findById(id)
+                .map(s -> new StudentDto(s.getName(), s.getEmail(), s.getRoll()))
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+    }
 }

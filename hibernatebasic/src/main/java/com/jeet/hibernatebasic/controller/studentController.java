@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/api")
 public class studentController {
     private final StudentService studentService;
 
@@ -16,13 +16,18 @@ public class studentController {
         this.studentService = studentService;
     }
 
-    @PostMapping
+    @PostMapping("/student")
     public Student addStudent(@RequestBody StudentDto studentDto){
         return studentService.createStudent(studentDto);
     }
 
-    @GetMapping
+    @GetMapping("/students")
     public List<StudentDto> getStudents() {
         return studentService.getAllStudents();
+    }
+
+    @GetMapping("/student/{id}")
+    public StudentDto getStudentById(@PathVariable Long id) {
+        return studentService.getStudentById(id);
     }
 }
