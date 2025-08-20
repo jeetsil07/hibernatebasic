@@ -1,7 +1,6 @@
 package com.jeet.hibernatebasic.service;
 
 import com.jeet.hibernatebasic.dto.StudentDto;
-import com.jeet.hibernatebasic.entity.Student;
 
 import java.util.List;
 

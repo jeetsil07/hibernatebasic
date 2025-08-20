@@ -21,4 +21,12 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND
         );
     }
+
+    @ExceptionHandler(TeacherNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleTeacherNotFound(TeacherNotFoundException ex) {
+        return new ResponseEntity<>(
+                new ApiResponse<>(ex.getMessage(), null, false,HttpStatus.NOT_FOUND.value()),
+                HttpStatus.NOT_FOUND
+        );
+    }
 }
